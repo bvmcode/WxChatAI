@@ -4,10 +4,10 @@ A friendly weather assistant that uses **AI-powered natural language processing*
 
 ## **AI Features**
 
-- ** AWS Bedrock Integration**: Enhanced query understanding and response generation using Claude models
-- ** Intelligent Location Extraction**: AI-powered location parsing from natural language
-- ** Contextual Responses**: Conversational, friendly weather responses
-- ** Graceful Fallback**: Falls back to rule-based parsing if AI is unavailable
+- **AWS Bedrock Integration**: Enhanced query understanding and response generation using Claude models
+- **Intelligent Location Extraction**: AI-powered location parsing from natural language
+- **Contextual Responses**: Conversational, friendly weather responses
+- **Graceful Fallback**: Falls back to rule-based parsing if AI is unavailable
 
 ## Architecture
 
