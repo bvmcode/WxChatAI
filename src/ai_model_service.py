@@ -58,11 +58,13 @@ class AIModelService:
         try:
             # Prepare the request based on model type
             if "claude" in self.model_id.lower():
-                # Claude models
+                # Claude models - fix message format
                 messages = []
                 if system_prompt:
-                    messages.append({"role": "user", "content": f"<system>{system_prompt}</system>"})
-                messages.append({"role": "user", "content": prompt})
+                    # For Claude, include system prompt in the first user message
+                    messages.append({"role": "user", "content": f"{system_prompt}\n\n{prompt}"})
+                else:
+                    messages.append({"role": "user", "content": prompt})
                 
                 request_body = {
                     "anthropic_version": "bedrock-2023-05-31",
@@ -100,8 +102,9 @@ class AIModelService:
                 # Default to Claude format
                 messages = []
                 if system_prompt:
-                    messages.append({"role": "user", "content": f"<system>{system_prompt}</system>"})
-                messages.append({"role": "user", "content": prompt})
+                    messages.append({"role": "user", "content": f"{system_prompt}\n\n{prompt}"})
+                else:
+                    messages.append({"role": "user", "content": prompt})
                 
                 request_body = {
                     "anthropic_version": "bedrock-2023-05-31",
@@ -155,9 +158,10 @@ class AIModelService:
             Return the information as a JSON object with these exact keys.
             """
             
-            user_prompt = f"Parse this weather query: {query}"
+            # Combine system prompt and user query into a single prompt
+            combined_prompt = f"{system_prompt}\n\nParse this weather query: {query}"
             
-            response = self._invoke_bedrock_model(user_prompt, system_prompt)
+            response = self._invoke_bedrock_model(combined_prompt)
             
             if response:
                 try:
@@ -269,7 +273,10 @@ class AIModelService:
             Generate a friendly, conversational response that directly answers the user's question.
             """
             
-            response = self._invoke_bedrock_model(user_prompt, system_prompt)
+            # Combine system prompt and user prompt into a single prompt
+            combined_prompt = f"{system_prompt}\n\n{user_prompt}"
+            
+            response = self._invoke_bedrock_model(combined_prompt)
             
             if response:
                 return response.strip()
